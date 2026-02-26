@@ -1,0 +1,22 @@
+{
+    "name": "@meetlog/db",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts",
+        "./schema": "./src/schema.ts"
+    },
+    "scripts": {
+        "check-types": "tsgo --noEmit",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:studio": "drizzle-kit studio"
+    },
+    "dependencies": {
+        "drizzle-orm": "^0.45.1",
+        "pg": "^8.19.0"
+    },
+    "devDependencies": {
+        "drizzle-kit": "^0.31.9"
+    }
+}

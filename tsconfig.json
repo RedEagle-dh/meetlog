@@ -1,14 +1,16 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "files": [],
+  "references": [{
+    "path": "apps/web",
+  },{
+    "path": "packages/db",
+  }, {
+    "path": "apps/api",
+  }],
   "compilerOptions": {
     "target": "ES2022",
-    "jsx": "react-jsx",
     "module": "ESNext",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "lib": ["ES2022"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

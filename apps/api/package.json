@@ -1,0 +1,10 @@
+{
+    "name": "@meetlog/api",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "check-types": "tsgo --noEmit"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
