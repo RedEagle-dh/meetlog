@@ -3,8 +3,14 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "check-types": "tsgo --noEmit"
+        "check-types": "tsgo --noEmit",
+        "dev": "bun run src/index.ts --watch"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@meetlog/db": "workspace:*",
+        "@elysiajs/cors": "^1.4.1",
+        "better-auth": "^1.4.19",
+        "elysia": "^1.4.26"
+    },
     "devDependencies": {}
 }

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Network } from "lucide-react";
+import React, { type SetStateAction, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,12 +13,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { signIn } from "@/lib/auth-client";
 
-export const Route = createFileRoute("/signUp/")({
-	component: SignUpPage,
+export const Route = createFileRoute("/_auth/signIn/")({
+	component: SignInPage,
 });
 
-function SignUpPage() {
+function SignInPage() {
+	const [email, setEmail] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEmail(e.target.value);
+	};
+
+	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPassword(e.target.value);
+	};
+
+	const handleSignIn = async () => {
+		await signIn.email({ email, password, callbackURL: "/dashboard" });
+	};
+
 	return (
 		<div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center px-4 py-12">
 			<Card className="w-full max-w-sm">
@@ -27,10 +44,10 @@ function SignUpPage() {
 						<span className="text-lg font-bold">MeetLog</span>
 					</div>
 					<CardTitle className="text-xl">
-						Create your account
+						Sign in to your account
 					</CardTitle>
 					<CardDescription>
-						Start mapping your connections today.
+						Welcome back! Enter your credentials below.
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-4">
@@ -58,53 +75,51 @@ function SignUpPage() {
 
 					<div className="flex flex-col gap-3">
 						<div className="space-y-1.5">
-							<Label htmlFor="name">Full Name</Label>
-							<Input
-								id="name"
-								type="text"
-								placeholder="Alice Johnson"
-							/>
-						</div>
-						<div className="space-y-1.5">
 							<Label htmlFor="email">Email</Label>
 							<Input
-								id="email"
+								id={useId()}
 								type="email"
 								placeholder="alice@example.com"
+								value={email}
+								onChange={handleEmailChange}
 							/>
 						</div>
 						<div className="space-y-1.5">
-							<Label htmlFor="password">Password</Label>
+							<div className="flex items-center justify-between">
+								<Label htmlFor="password">Password</Label>
+								<button
+									type="button"
+									className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+								>
+									Forgot password?
+								</button>
+							</div>
 							<Input
-								id="password"
+								id={useId()}
 								type="password"
-								placeholder="Create a password"
-							/>
-						</div>
-						<div className="space-y-1.5">
-							<Label htmlFor="confirmPassword">
-								Confirm Password
-							</Label>
-							<Input
-								id="confirmPassword"
-								type="password"
-								placeholder="Confirm your password"
+								placeholder="Enter your password"
+								value={password}
+								onChange={handlePasswordChange}
 							/>
 						</div>
 					</div>
 
-					<Button type="button" className="w-full mt-1">
-						Create Account
+					<Button
+						type="button"
+						className="w-full mt-1"
+						onClick={handleSignIn}
+					>
+						Sign In
 					</Button>
 				</CardContent>
 				<CardFooter className="justify-center">
 					<p className="text-sm text-muted-foreground">
-						Already have an account?{" "}
+						Don&apos;t have an account?{" "}
 						<Link
-							to="/signIn"
+							to="/signUp"
 							className="font-medium text-foreground hover:underline"
 						>
-							Sign in
+							Sign up
 						</Link>
 					</p>
 				</CardFooter>

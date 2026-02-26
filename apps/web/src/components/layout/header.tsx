@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { Menu, Network, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import {
 	SheetTitle,
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSession } from "@/lib/auth-client";
 
 const navLinks = [
 	{ label: "Features", to: "/#features", isHash: true },
@@ -18,6 +19,8 @@ const navLinks = [
 export function Header() {
 	const isMobile = useIsMobile();
 	const [mobileOpen, setMobileOpen] = useState(false);
+
+	const { data: session, error, isPending } = useSession();
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
@@ -60,16 +63,19 @@ export function Header() {
 				)}
 
 				{/* Desktop Auth Buttons */}
-				{!isMobile && (
-					<div className="flex items-center gap-2">
-						<Button variant="ghost" size="sm" asChild>
-							<Link to="/signIn">Sign In</Link>
-						</Button>
-						<Button size="sm" asChild>
-							<Link to="/signUp">Get Started</Link>
-						</Button>
-					</div>
-				)}
+				{!isMobile &&
+					(session ? (
+						session.user.name
+					) : (
+						<div className="flex items-center gap-2">
+							<Button variant="ghost" size="sm" asChild>
+								<Link to="/signIn">Sign In</Link>
+							</Button>
+							<Button size="sm" asChild>
+								<Link to="/signUp">Get Started</Link>
+							</Button>
+						</div>
+					))}
 
 				{/* Mobile Hamburger */}
 				{isMobile && (
@@ -124,6 +130,7 @@ export function Header() {
 									</a>
 								);
 							})}
+							{}
 							<div className="mt-4 flex flex-col gap-2">
 								<Button variant="outline" asChild>
 									<Link

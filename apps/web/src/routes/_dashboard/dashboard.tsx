@@ -1,7 +1,17 @@
-import { useState, useCallback } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Search, Palette } from "lucide-react";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { Palette, Search } from "lucide-react";
+import { useCallback, useState } from "react";
+import { ConnectionGraph } from "@/components/graph/connection-graph";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import {
 	Select,
 	SelectContent,
@@ -9,36 +19,36 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
 	Sheet,
 	SheetContent,
+	SheetDescription,
 	SheetHeader,
 	SheetTitle,
-	SheetDescription,
 } from "@/components/ui/sheet";
-import { ConnectionGraph } from "@/components/graph/connection-graph";
 import {
-	type PersonNode,
-	type RelationshipType,
-	relationshipColors,
-	relationshipLabels,
-	relationshipBadgeClasses,
 	connections as allConnections,
 	people as allPeople,
+	type PersonNode,
+	type RelationshipType,
+	relationshipBadgeClasses,
+	relationshipColors,
+	relationshipLabels,
 } from "@/data/mock-connections";
+import { withAPI } from "@/lib/api.middleware";
 
-export const Route = createFileRoute("/dashboard/")({
+export const Route = createFileRoute("/_dashboard/dashboard")({
+	loader: () => protectedApiRoute(),
 	component: DashboardPage,
 });
+
+const protectedApiRoute = createServerFn({ method: "GET" })
+	.middleware([withAPI])
+	.handler(async ({ context }) => {
+		const result = await context.api.get();
+		return result.data;
+	});
 
 function DashboardPage() {
 	const [filter, setFilter] = useState<RelationshipType | "all">("all");
@@ -64,9 +74,7 @@ function DashboardPage() {
 						c.sourceId === selectedPerson.id
 							? c.targetId
 							: c.sourceId;
-					const otherPerson = allPeople.find(
-						(p) => p.id === otherId,
-					);
+					const otherPerson = allPeople.find((p) => p.id === otherId);
 					return {
 						person: otherPerson,
 						label: c.label,
@@ -76,8 +84,11 @@ function DashboardPage() {
 				.filter((c) => c.person)
 		: [];
 
+	const healthcheck = useLoaderData({ from: "/_dashboard/dashboard" });
+
 	return (
 		<div className="flex h-[calc(100vh-3.5rem)] flex-col">
+			{`${healthcheck?.code} ${healthcheck?.status}`}
 			{/* Toolbar */}
 			<div className="flex items-center gap-3 border-b px-4 py-2.5">
 				<Select
@@ -230,8 +241,7 @@ function DashboardPage() {
 								{/* Connections */}
 								<div>
 									<p className="text-sm font-medium mb-3">
-										Connections (
-										{personConnections.length})
+										Connections ({personConnections.length})
 									</p>
 									<div className="space-y-2">
 										{personConnections.map((conn) => (
@@ -249,10 +259,7 @@ function DashboardPage() {
 											>
 												<Avatar className="size-7">
 													<AvatarFallback className="text-[10px]">
-														{
-															conn.person
-																?.initials
-														}
+														{conn.person?.initials}
 													</AvatarFallback>
 												</Avatar>
 												<div className="min-w-0 flex-1">

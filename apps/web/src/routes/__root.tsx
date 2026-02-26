@@ -6,9 +6,9 @@ import {
 	useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import appCss from "../styles.css?url";
 
