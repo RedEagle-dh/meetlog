@@ -1,5 +1,8 @@
-import { BaseEdge, getBezierPath, type EdgeProps } from "@xyflow/react";
-import { relationshipColors, type RelationshipType } from "@/data/mock-connections";
+import { BaseEdge, type EdgeProps, getBezierPath } from "@xyflow/react";
+import {
+	type RelationshipType,
+	relationshipColors,
+} from "@/data/mock-connections";
 
 type RelationshipEdgeData = {
 	relationship: RelationshipType;

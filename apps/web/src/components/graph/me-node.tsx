@@ -32,8 +32,16 @@ export function MeNode({ data }: { data: MeNodeData }) {
 				</div>
 			</div>
 
-			<Handle type="source" position={Position.Top} className="!bg-primary/50 !border-0 !w-2 !h-2 opacity-0" />
-			<Handle type="target" position={Position.Bottom} className="!bg-primary/50 !border-0 !w-2 !h-2 opacity-0" />
+			<Handle
+				type="source"
+				position={Position.Top}
+				className="!bg-primary/50 !border-0 !w-2 !h-2 opacity-0"
+			/>
+			<Handle
+				type="target"
+				position={Position.Bottom}
+				className="!bg-primary/50 !border-0 !w-2 !h-2 opacity-0"
+			/>
 		</div>
 	);
 }

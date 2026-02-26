@@ -1,8 +1,8 @@
-import type { Node, Edge } from "@xyflow/react";
+import type { Edge, Node } from "@xyflow/react";
 import {
-	type PersonNode,
 	type ConnectionEdge,
 	meUser,
+	type PersonNode,
 	relationshipColors,
 } from "@/data/mock-connections";
 

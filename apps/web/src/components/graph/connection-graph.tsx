@@ -1,28 +1,26 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-	ReactFlow,
-	Controls,
-	MiniMap,
 	Background,
 	BackgroundVariant,
-	useNodesState,
-	useEdgesState,
-	type Node,
-	type Edge,
+	Controls,
+	MiniMap,
 	type NodeMouseHandler,
+	ReactFlow,
+	useEdgesState,
+	useNodesState,
 } from "@xyflow/react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
-import { MeNode } from "./me-node";
-import { PersonNode } from "./person-node";
-import { RelationshipEdge } from "./relationship-edge";
-import { computeRadialLayout } from "@/lib/graph-utils";
 import {
-	people as allPeople,
 	connections as allConnections,
+	people as allPeople,
 	type PersonNode as PersonNodeType,
 	type RelationshipType,
 } from "@/data/mock-connections";
+import { computeRadialLayout } from "@/lib/graph-utils";
+import { MeNode } from "./me-node";
+import { PersonNode } from "./person-node";
+import { RelationshipEdge } from "./relationship-edge";
 
 const nodeTypes = {
 	meNode: MeNode,

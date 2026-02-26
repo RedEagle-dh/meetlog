@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, Network, X } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Sheet,
@@ -11,8 +11,8 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const navLinks = [
-	{ label: "Features", to: "/#features" },
-	{ label: "Dashboard", to: "/dashboard" },
+	{ label: "Features", to: "/#features", isHash: true },
+	{ label: "Dashboard", to: "/dashboard", isHash: false },
 ] as const;
 
 export function Header() {
@@ -33,15 +33,29 @@ export function Header() {
 				{/* Desktop Nav */}
 				{!isMobile && (
 					<nav className="flex items-center gap-6">
-						{navLinks.map((link) => (
-							<Link
-								key={link.label}
-								to={link.to}
-								className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-							>
-								{link.label}
-							</Link>
-						))}
+						{navLinks.map((link) => {
+							if (!link.isHash) {
+								return (
+									<Link
+										key={link.label}
+										to={link.to}
+										className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+									>
+										{link.label}
+									</Link>
+								);
+							}
+
+							return (
+								<a
+									href={link.to}
+									key={link.label}
+									className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+								>
+									{link.label}
+								</a>
+							);
+						})}
 					</nav>
 				)}
 
@@ -87,16 +101,29 @@ export function Header() {
 							</div>
 						</SheetHeader>
 						<nav className="flex flex-col gap-2 px-4">
-							{navLinks.map((link) => (
-								<Link
-									key={link.label}
-									to={link.to}
-									onClick={() => setMobileOpen(false)}
-									className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-								>
-									{link.label}
-								</Link>
-							))}
+							{navLinks.map((link) => {
+								if (!link.isHash) {
+									return (
+										<Link
+											key={link.label}
+											to={link.to}
+											className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+										>
+											{link.label}
+										</Link>
+									);
+								}
+
+								return (
+									<a
+										href={link.to}
+										key={link.label}
+										className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+									>
+										{link.label}
+									</a>
+								);
+							})}
 							<div className="mt-4 flex flex-col gap-2">
 								<Button variant="outline" asChild>
 									<Link
